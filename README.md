@@ -73,7 +73,7 @@ python -m stance_model.main dataset/stance_data.csv --epochs 5
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourname/stance-model.git
+git clone https://github.com/karan-0701/SocialMediaAnalysisPipeline.git
 cd stance-model
 ```
 
