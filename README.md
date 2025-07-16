@@ -1,29 +1,28 @@
-Stance Detection Model
-This repository trains a BERT-based stance detection model to classify text into four categories:
+# Stance Detection Model
 
-Pro-Palestine
+This repository trains a **BERT-based stance detection model** to classify text into four categories:
+* `Pro-Palestine`
+* `Pro-Israel`
+* `Neutral`
+* `Irrelevant`
 
-Pro-Israel
+It uses **Hugging Face Transformers**, PyTorch, and a custom training pipeline to fine-tune a `bert-base-uncased` model.
 
-Neutral
+## 🚀 How It Works
 
-Irrelevant
+The model is trained to **detect stance** from short social media texts (e.g., tweets or captions). Each input text is classified into one of the four predefined stance categories.
 
-It uses Hugging Face Transformers, PyTorch, and a custom training pipeline to fine-tune a bert-base-uncased model.
-
-How It Works
-The model is trained to detect stance from short social media texts (e.g., tweets or captions). Each input text is classified into one of the four predefined stance categories.
+A **hand-annotated dataset** is provided for fine-tuning the model to ensure high-quality training data with accurate stance labels.
 
 The data is split into training, validation, and test sets, tokenized using BERT tokenizer, and passed to a sequence classification head for fine-tuning.
 
-🛠️ Project Structure
-graphql
-Copy
-Edit
+## 🛠️ Project Structure
+
+```
 stance_model/
-├── dataset/                  # Your CSV files go here
-├── exported_stance_model/   # Trained model is saved here
-├── stance_model/            # Core module
+├── dataset/                    # Your CSV files go here
+├── exported_stance_model/      # Trained model is saved here
+├── stance_model/               # Core module
 │   ├── config.py
 │   ├── data_utils.py
 │   ├── dataset.py
@@ -33,52 +32,59 @@ stance_model/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
-Input Dataset Format
-Your dataset should be a CSV file with at least the following two columns:
+```
 
-text	label
-"We stand with Palestine."	Pro-Palestine
-"I don't care about politics"	irrelevant
+## 🧪 Input Dataset Format
 
-The label column must contain one of:
-Pro-Palestine, Pro-Israel, Neutral, or irrelevant
+Your dataset should be a **CSV** file with at least the following two columns:
 
-Command-Line Usage
+| text | label |
+|------|-------|
+| "We stand with Palestine." | Pro-Palestine |
+| "I don't care about politics" | irrelevant |
+
+The `label` column must contain one of: `Pro-Palestine`, `Pro-Israel`, `Neutral`, or `irrelevant`
+
+## 🖥️ Command-Line Usage
+
 Run the training script using the module interface:
 
-bash
-Copy
-Edit
+```bash
 python -m stance_model.main <csv_path> [--epochs N]
-CLI Arguments
-Argument	Type	Description
-<csv_path>	str	Path to the input dataset CSV file (required)
---epochs	int	Number of training epochs (default: 3)
+```
 
-Example
-Train for 5 epochs using dataset/stance_data.csv:
+## 🔧 CLI Arguments
 
-bash
-Copy
-Edit
+| Argument | Type | Description |
+|----------|------|-------------|
+| `<csv_path>` | str | Path to the input dataset CSV file (required) |
+| `--epochs` | int | Number of training epochs (default: `3`) |
+
+## 🧾 Example
+
+Train for 5 epochs using `dataset/stance_data.csv`:
+
+```bash
 python -m stance_model.main dataset/stance_data.csv --epochs 5
-Installation
-Clone the repository:
+```
 
-bash
-Copy
-Edit
+## 📦 Installation
+
+1. Clone the repository:
+
+```bash
 git clone https://github.com/yourname/stance-model.git
 cd stance-model
-Install dependencies:
+```
 
-bash
-Copy
-Edit
+2. Install dependencies:
+
+```bash
 pip install -r requirements.txt
-📤 Output
+```
+
+## 📤 Output
+
 After training:
-
-Evaluation metrics are printed for train/val/test sets.
-
-The trained model and tokenizer are saved to: exported_stance_model/
+* Evaluation metrics are printed for train/val/test sets.
+* The trained model and tokenizer are saved to: `exported_stance_model/`
