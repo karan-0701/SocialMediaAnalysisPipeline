@@ -1,72 +1,104 @@
-# Stance Detection Model
 
-This repository trains a **BERT-based stance detection model** to classify text into four categories:
-* `Pro-Palestine`
-* `Pro-Israel`
-* `Neutral`
-* `Irrelevant`
+# 🧠 NLP Project: Stance Detection & Topic Modeling
 
-It uses **Hugging Face Transformers**, PyTorch, and a custom training pipeline to fine-tune a `bert-base-uncased` model.
+This repository contains two main components:
 
-## 🚀 How It Works
+1. **Stance Detection**: Classifies text into stance labels using a fine-tuned BERT model.
+2. **Topic Modeling**: Discovers latent topics from a collection of documents using BERTopic.
 
-The model is trained to **detect stance** from short social media texts (e.g., tweets or captions). Each input text is classified into one of the four predefined stance categories.
+---
+
+## 1️⃣ Stance Detection
+
+### 🔍 What It Does
+
+The stance detection model classifies short text (e.g., social media posts) into one of four categories:
+
+- `Pro-Palestine`
+- `Pro-Israel`
+- `Neutral`
+- `Irrelevant`
+
+It uses a pre-trained `bert-base-uncased` model from Hugging Face Transformers, fine-tuned on your provided dataset.
 
 A **hand-annotated dataset** is provided for fine-tuning the model to ensure high-quality training data with accurate stance labels.
 
 The data is split into training, validation, and test sets, tokenized using BERT tokenizer, and passed to a sequence classification head for fine-tuning.
 
-## 🛠️ Project Structure
+---
 
-```
-stance_model/
-├── dataset/                    # Your CSV files go here
-├── exported_stance_model/      # Trained model is saved here
-├── stance_model/               # Core module
-│   ├── config.py
-│   ├── data_utils.py
-│   ├── dataset.py
-│   ├── metrics.py
-│   ├── train.py
-│   └── main.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+### 📁 Input Dataset Format
 
-## 🧪 Input Dataset Format
+Your dataset should be a **CSV** file containing at least two columns:
 
-Your dataset should be a **CSV** file with at least the following two columns:
+| text                          | label         |
+|------------------------------|---------------|
+| "We support Palestine."      | Pro-Palestine |
+| "I don’t care about politics"| irrelevant     |
 
-| text | label |
-|------|-------|
-| "We stand with Palestine." | Pro-Palestine |
-| "I don't care about politics" | irrelevant |
+Valid `label` values:
+- `Pro-Palestine`, `Pro-Israel`, `Neutral`, `irrelevant`
 
-The `label` column must contain one of: `Pro-Palestine`, `Pro-Israel`, `Neutral`, or `irrelevant`
+---
 
-## 🖥️ Command-Line Usage
-
-Run the training script using the module interface:
+### 🖥️ Usage
 
 ```bash
-python -m stance_model.main <csv_path> [--epochs N]
+python -m stance_model.main <csv_path> --epochs 5
 ```
 
-## 🔧 CLI Arguments
+### ✅ CLI Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `<csv_path>` | str | Path to the input dataset CSV file (required) |
-| `--epochs` | int | Number of training epochs (default: `3`) |
+| Argument       | Type | Description                                        |
+|----------------|------|----------------------------------------------------|
+| `<csv_path>`   | str  | Path to the input CSV file                         |
+| `--epochs`     | int  | (Optional) Number of training epochs (default: 3)  |
 
-## 🧾 Example
-
-Train for 5 epochs using `dataset/stance_data.csv`:
+### 🧾 Example
 
 ```bash
 python -m stance_model.main dataset/stance_data.csv --epochs 5
 ```
+
+---
+
+## 2️⃣ Topic Modeling
+
+### 🔍 What It Does
+
+This module performs unsupervised topic modeling using:
+
+- [BERTopic](https://maartengr.github.io/BERTopic/)
+- Sentence embeddings from SentenceTransformers (`all-MiniLM-L6-v2`)
+- Clustering to discover topics from text
+
+---
+
+### 📁 Input Dataset Format
+
+Your CSV file should contain a text column (e.g., YouTube video titles):
+
+| title                          |
+|--------------------------------|
+| "Why Gaza is under siege"      |
+| "History of Palestine and Israel" |
+
+---
+
+### 🖥️ Usage
+
+```bash
+python -m topic_model.main dataset/youtube-videos.csv --print-topics
+```
+
+### ✅ CLI Arguments
+
+| Argument          | Type | Description                               |
+|-------------------|------|-------------------------------------------|
+| `<csv_path>`      | str  | Path to the CSV file                      |
+| `--print-topics`  | flag | Print the top words for each discovered topic |
+
+---
 
 ## 📦 Installation
 
@@ -83,8 +115,38 @@ cd stance-model
 pip install -r requirements.txt
 ```
 
+---
+
 ## 📤 Output
 
-After training:
-* Evaluation metrics are printed for train/val/test sets.
-* The trained model and tokenizer are saved to: `exported_stance_model/`
+- **Stance model**: Saved to the `exported_stance_model/` directory.
+- **Topic modeling**: Topics and keywords are printed in the console.
+
+---
+
+## 📁 Project Structure
+
+```
+stance_topic_project/
+├── dataset/                            # CSV files (e.g., stance_data.csv, youtube-videos.csv)
+├── exported_stance_model/             # Trained stance model is saved here
+├── stance_model/                      # Stance detection module
+│   ├── config.py
+│   ├── data_utils.py
+│   ├── dataset.py
+│   ├── metrics.py
+│   ├── train.py
+│   ├── main.py
+│   └── __init__.py
+├── topic_model/                       # Topic modeling module
+│   ├── data_loader.py
+│   ├── model.py
+│   ├── utils.py
+│   ├── main.py
+│   └── __init__.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+---
