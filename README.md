@@ -1,5 +1,5 @@
 
-# 🧠 NLP Project: Stance Detection & Topic Modeling
+# NLP Project: Stance Detection & Topic Modeling
 
 This repository contains two main components:
 
